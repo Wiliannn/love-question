@@ -6,189 +6,229 @@
 <title>یه سوال کوچیک ❤️</title>
 
 <style>
-
 body{
-margin:0;
-font-family:tahoma;
-background:linear-gradient(135deg,#ffd6e7,#fff0f6,#ffffff);
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-overflow:hidden;
-text-align:center;
+  margin:0;
+  font-family:tahoma;
+  background:linear-gradient(135deg,#ffd6e7,#fff0f6,#ffffff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  overflow:hidden;
+  text-align:center;
 }
 
 .container{
-padding:50px;
-background:rgba(255,255,255,0.75);
-backdrop-filter:blur(10px);
-border-radius:25px;
-box-shadow:0 15px 40px rgba(0,0,0,0.2);
-width:500px;
-max-width:90%;
+  padding:50px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(10px);
+  border-radius:25px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.2);
+  width:500px;
+  max-width:90%;
+  position:relative;
+  z-index:2;
+  transition:filter 0.35s ease, opacity 0.35s ease, transform 0.35s ease;
 }
 
 h1{
-font-size:30px;
-color:#333;
-min-height:40px;
+  font-size:30px;
+  color:#333;
+  min-height:40px;
 }
 
 #question{
-font-size:22px;
-margin-top:15px;
-color:#444;
+  font-size:22px;
+  margin-top:15px;
+  color:#444;
+  min-height:40px;
 }
 
 .buttons{
-position:relative;
-height:160px;
-margin-top:40px;
+  position:relative;
+  height:160px;
+  margin-top:40px;
 }
 
 button{
-padding:14px 35px;
-font-size:18px;
-border:none;
-border-radius:14px;
-cursor:pointer;
-box-shadow:0 5px 20px rgba(0,0,0,0.2);
+  padding:14px 35px;
+  font-size:18px;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  box-shadow:0 5px 20px rgba(0,0,0,0.2);
+  transition:transform 0.2s ease;
+}
+
+button:hover{
+  transform:scale(1.05);
 }
 
 #yes{
-background:#ff4d88;
-color:white;
-position:absolute;
-right:40px;
-top:60px;
+  background:#ff4d88;
+  color:white;
+  position:absolute;
+  right:40px;
+  top:60px;
+  z-index:2;
 }
 
 #no{
-background:#444;
-color:white;
-position:absolute;
-left:40px;
-top:60px;
+  background:#444;
+  color:white;
+  position:absolute;
+  left:40px;
+  top:60px;
+  z-index:1;
 }
 
 #result{
-display:none;
-font-size:42px;
-color:#ff2e7a;
+  display:none;
+  font-size:42px;
+  color:#ff2e7a;
 }
 
 .heart{
-position:fixed;
-font-size:22px;
-animation:float 6s linear infinite;
+  position:fixed;
+  font-size:22px;
+  animation:float 6s linear infinite;
 }
 
 @keyframes float{
-0%{transform:translateY(100vh);}
-100%{transform:translateY(-10vh);}
+  0%{transform:translateY(100vh);}
+  100%{transform:translateY(-10vh);}
 }
 
+.blur-screen{
+  filter:blur(10px);
+  transform:scale(0.98);
+  opacity:0.85;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container" id="main">
+  <h1 id="title"></h1>
+  <div id="question">هنوز منو دوست داری؟</div>
 
-<h1 id="title"></h1>
-
-<div id="question">هنوز منو دوست داری؟</div>
-
-<div class="buttons" id="buttonArea">
-<button id="yes">بله</button>
-<button id="no">نه</button>
-</div>
-
+  <div class="buttons" id="buttonArea">
+    <button id="yes">بله</button>
+    <button id="no">نه</button>
+  </div>
 </div>
 
 <div id="result">میدونستم :) ❤️</div>
 
 <script>
-
-const titleText="مبینا رضایی یه چندتا سوال دارم";
-let i=0;
+const titleText = "مبینا رضایی یه چندتا سوال دارم";
+let i = 0;
 
 function typeTitle(){
-if(i<titleText.length){
-document.getElementById("title").innerHTML+=titleText.charAt(i);
-i++;
-setTimeout(typeTitle,70);
-}
+  if(i < titleText.length){
+    document.getElementById("title").innerHTML += titleText.charAt(i);
+    i++;
+    setTimeout(typeTitle, 70);
+  }
 }
 typeTitle();
 
-const questions=[
-"هنوز منو دوست داری؟",
-"دلت واسم تنگ شده؟",
-"من هنوز ایل توعم؟"
+const questions = [
+  "هنوز منو دوست داری؟",
+  "دلت واسم تنگ شده؟",
+  "من هنوز ایل توعم؟"
 ];
 
-let current=0;
+let current = 0;
 
-const qText=document.getElementById("question");
-const yesBtn=document.getElementById("yes");
-const noBtn=document.getElementById("no");
-const area=document.getElementById("buttonArea");
-const result=document.getElementById("result");
-const main=document.getElementById("main");
+const qText = document.getElementById("question");
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const area = document.getElementById("buttonArea");
+const result = document.getElementById("result");
+const main = document.getElementById("main");
 
 function moveButton(){
+  const areaRect = area.getBoundingClientRect();
 
-const areaRect=area.getBoundingClientRect();
+  // ابعاد تقریبی دکمه
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
 
-const x=Math.random()*(areaRect.width-100);
-const y=Math.random()*(areaRect.height-50);
+  // محدوده حرکت طوری تنظیم می‌شود که از روی بله رد نشود
+  const maxX = areaRect.width - btnWidth;
+  const maxY = areaRect.height - btnHeight;
 
-noBtn.style.left=x+"px";
-noBtn.style.top=y+"px";
+  let x, y;
+  let tries = 0;
 
+  do {
+    x = Math.random() * maxX;
+    y = Math.random() * maxY;
+    tries++;
+    
+    // ناحیه امن برای بله
+    const yesRect = yesBtn.getBoundingClientRect();
+    const areaTop = areaRect.top;
+    const areaLeft = areaRect.left;
+
+    const noAbsLeft = areaLeft + x;
+    const noAbsTop = areaTop + y;
+
+    const noRect = {
+      left: noAbsLeft,
+      right: noAbsLeft + btnWidth,
+      top: noAbsTop,
+      bottom: noAbsTop + btnHeight
+    };
+
+    const overlap =
+      !(noRect.right < yesRect.left ||
+        noRect.left > yesRect.right ||
+        noRect.bottom < yesRect.top ||
+        noRect.top > yesRect.bottom);
+
+    if(!overlap || tries > 30) break;
+  } while(true);
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
 }
 
-noBtn.addEventListener("touchstart",moveButton);
-noBtn.addEventListener("mouseover",moveButton);
+noBtn.addEventListener("touchstart", moveButton);
+noBtn.addEventListener("mouseover", moveButton);
 
-yesBtn.onclick=function(){
+yesBtn.onclick = function(){
+  // صفحه تار شود
+  main.classList.add("blur-screen");
 
-current++;
+  setTimeout(() => {
+    current++;
+    
+    noBtn.style.left = "40px";
+    noBtn.style.top = "60px";
 
-noBtn.style.left="40px";
-noBtn.style.top="60px";
-
-if(current<questions.length){
-
-qText.innerText=questions[current];
-
-}else{
-
-main.style.display="none";
-result.style.display="block";
-setInterval(createHeart,200);
-
-}
-
+    if(current < questions.length){
+      qText.innerText = questions[current];
+      main.classList.remove("blur-screen");
+    } else {
+      main.style.display = "none";
+      result.style.display = "block";
+      setInterval(createHeart, 200);
+    }
+  }, 500);
 };
 
 function createHeart(){
-
-const heart=document.createElement("div");
-heart.className="heart";
-heart.innerHTML="❤️";
-
-heart.style.left=Math.random()*100+"vw";
-heart.style.fontSize=(20+Math.random()*30)+"px";
-
-document.body.appendChild(heart);
-
-setTimeout(()=>{heart.remove();},6000);
-
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (20 + Math.random() * 30) + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => { heart.remove(); }, 6000);
 }
-
 </script>
 
 </body>
