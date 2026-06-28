@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>یه سوال کوچیک ❤️</title>
+
+<style>
+
+body{
+margin:0;
+font-family:tahoma;
+background:linear-gradient(135deg,#ffd6e7,#fff0f6,#ffffff);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+text-align:center;
+}
+
+.container{
+padding:50px;
+background:rgba(255,255,255,0.75);
+backdrop-filter:blur(10px);
+border-radius:25px;
+box-shadow:0 15px 40px rgba(0,0,0,0.2);
+width:500px;
+max-width:90%;
+}
+
+h1{
+font-size:30px;
+color:#333;
+min-height:40px;
+}
+
+#question{
+font-size:22px;
+margin-top:15px;
+color:#444;
+}
+
+.buttons{
+position:relative;
+height:160px;
+margin-top:40px;
+}
+
+button{
+padding:14px 35px;
+font-size:18px;
+border:none;
+border-radius:14px;
+cursor:pointer;
+box-shadow:0 5px 20px rgba(0,0,0,0.2);
+}
+
+#yes{
+background:#ff4d88;
+color:white;
+position:absolute;
+right:40px;
+top:60px;
+}
+
+#no{
+background:#444;
+color:white;
+position:absolute;
+left:40px;
+top:60px;
+}
+
+#result{
+display:none;
+font-size:42px;
+color:#ff2e7a;
+}
+
+.heart{
+position:fixed;
+font-size:22px;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh);}
+100%{transform:translateY(-10vh);}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container" id="main">
+
+<h1 id="title"></h1>
+
+<div id="question">هنوز منو دوست داری؟</div>
+
+<div class="buttons" id="buttonArea">
+<button id="yes">بله</button>
+<button id="no">نه</button>
+</div>
+
+</div>
+
+<div id="result">میدونستم :) ❤️</div>
+
+<script>
+
+const titleText="مبینا رضایی یه چندتا سوال دارم";
+let i=0;
+
+function typeTitle(){
+if(i<titleText.length){
+document.getElementById("title").innerHTML+=titleText.charAt(i);
+i++;
+setTimeout(typeTitle,70);
+}
+}
+typeTitle();
+
+const questions=[
+"هنوز منو دوست داری؟",
+"دلت واسم تنگ شده؟",
+"من هنوز ایل توعم؟"
+];
+
+let current=0;
+
+const qText=document.getElementById("question");
+const yesBtn=document.getElementById("yes");
+const noBtn=document.getElementById("no");
+const area=document.getElementById("buttonArea");
+const result=document.getElementById("result");
+const main=document.getElementById("main");
+
+function moveButton(){
+
+const areaRect=area.getBoundingClientRect();
+
+const x=Math.random()*(areaRect.width-100);
+const y=Math.random()*(areaRect.height-50);
+
+noBtn.style.left=x+"px";
+noBtn.style.top=y+"px";
+
+}
+
+noBtn.addEventListener("touchstart",moveButton);
+noBtn.addEventListener("mouseover",moveButton);
+
+yesBtn.onclick=function(){
+
+current++;
+
+noBtn.style.left="40px";
+noBtn.style.top="60px";
+
+if(current<questions.length){
+
+qText.innerText=questions[current];
+
+}else{
+
+main.style.display="none";
+result.style.display="block";
+setInterval(createHeart,200);
+
+}
+
+};
+
+function createHeart(){
+
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤️";
+
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(20+Math.random()*30)+"px";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{heart.remove();},6000);
+
+}
+
+</script>
+
+</body>
+</html>
